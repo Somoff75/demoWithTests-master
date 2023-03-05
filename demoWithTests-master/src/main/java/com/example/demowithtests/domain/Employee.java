@@ -23,7 +23,7 @@ public class Employee {
 
     private boolean isDeleted;
 
-    public boolean isDeleted() {
+    public boolean getIsDeleted() {
         return isDeleted;
     }
 
