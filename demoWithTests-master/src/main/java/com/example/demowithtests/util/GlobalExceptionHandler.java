@@ -36,4 +36,6 @@ public class GlobalExceptionHandler {
     private static class MyGlobalExceptionHandler {
         private String message;
     }
+
+
 }

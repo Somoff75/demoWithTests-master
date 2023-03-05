@@ -55,11 +55,11 @@ public class ServiceBean implements Service {
     public void removeById(Integer id) {
         //repository.deleteById(id);
         Employee employee = repository.findById(id)
-                // .orElseThrow(() -> new EntityNotFoundException("Employee not found with id = " + id));
-                .orElseThrow(ResourceWasDeletedException::new);
-        //employee.setIsDeleted(true);
-        repository.delete(employee);
-        //repository.save(employee);
+                .orElseThrow(() -> new EntityNotFoundException("Employee not found with id = " + id));
+                //.orElseThrow(ResourceWasDeletedException::new);
+        employee.setIsDeleted(true);
+       // repository.delete(employee);
+        repository.save(employee);
     }
 
     @Override

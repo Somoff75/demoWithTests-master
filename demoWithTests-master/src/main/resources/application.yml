@@ -6,6 +6,7 @@ spring:
     url: jdbc:postgresql://localhost:5432/employee
     username: postgres
     password: 5
+
   # JPA properties
   jpa:
     hibernate:
@@ -15,6 +16,7 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     open-in-view: false
     generate-ddl: true
+
 # Server configuration
 server:
   port: 8087 #set your port
