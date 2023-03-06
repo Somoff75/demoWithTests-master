@@ -64,19 +64,26 @@ public class Controller {
     //Замена всех Null на false
     @GetMapping("/replaceNull")
     @ResponseStatus(HttpStatus.OK)
-    public void replaceNull(){
+    public void replaceNull() {
         service.processor();
     }
 
     @PostMapping("/sendEmailByCountry")
     @ResponseStatus(HttpStatus.OK)
-    public void sendEmailByCountry(@RequestParam String country, @RequestParam String text){
+    public void sendEmailByCountry(@RequestParam String country, @RequestParam String text) {
         service.sendEmailByCountry(country, text);
     }
 
     @PostMapping("/sendEmailByCity")
     @ResponseStatus(HttpStatus.OK)
-    public void sendEmailByCity(@RequestParam String city, @RequestParam String text){
-        service.sendEmailByCountry(city, text);
+    public void sendEmailByCity(@RequestParam String city, @RequestParam String text) {
+        service.sendEmailByCity(city, text);
     }
+
+    @PostMapping("/sendEmailByCitySQL")
+    @ResponseStatus(HttpStatus.OK)
+    public void sendEmailByCitySQL(@RequestParam String city, @RequestParam String text) {
+        service.sendEmailByCitySQL(city, text);
+    }
+
 }

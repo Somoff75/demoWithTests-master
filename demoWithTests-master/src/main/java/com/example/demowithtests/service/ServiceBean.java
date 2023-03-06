@@ -51,9 +51,9 @@ public class ServiceBean implements Service {
         Employee employee = repository.findById(id)
                 // .orElseThrow(() -> new EntityNotFoundException("Employee not found with id = " + id));
                 .orElseThrow(ResourceNotFoundException::new);
-         if (employee.getIsDeleted()) {
-             log.info("!-- getById: Employee was deleted with id = " + id);
-             throw new EntityWasDeletedException();
+        if (employee.getIsDeleted()) {
+            log.info("!-- getById: Employee was deleted with id = " + id);
+            throw new EntityWasDeletedException();
         }
         return employee;
     }
@@ -109,14 +109,21 @@ public class ServiceBean implements Service {
 
     @Override
     public List<Employee> sendEmailByCity(String city, String text) {
-        List<Employee> employees = repository.findEmployeeByAddresses(city);
+        List<Employee> employees = repository.findEmployeeByCity(city);
+        mailSender(extracted(employees), text);
+
+        return employees;
+    }
+
+    @Override
+    public List<Employee> sendEmailByCitySQL(String city, String text) {
+        List<Employee> employees = repository.findEmployeeByCitySQL(city);
         mailSender(extracted(employees), text);
         return employees;
     }
 
     private static List<String> extracted(List<Employee> employees) {
         List<String> emails = new ArrayList<>();
-        //Arrays.asList();
         for (Employee emp : employees) {
             emails.add(emp.getEmail());
         }
@@ -124,6 +131,6 @@ public class ServiceBean implements Service {
     }
 
     public void mailSender(List<String> emails, String text) {
-        log.info("Emails were successfully sent");
+        log.info("Emails were successfully sent to: " + emails);
     }
 }

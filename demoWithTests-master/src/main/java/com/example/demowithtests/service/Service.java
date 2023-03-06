@@ -25,4 +25,6 @@ public interface Service {
 
     List<Employee> sendEmailByCity(String city, String text);
 
+    List<Employee> sendEmailByCitySQL(String city, String text);
+
 }
