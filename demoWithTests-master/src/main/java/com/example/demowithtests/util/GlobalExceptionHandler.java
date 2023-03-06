@@ -37,5 +37,28 @@ public class GlobalExceptionHandler {
         private String message;
     }
 
+    // My custom exeptions:
+    @ExceptionHandler(NewUserNameIsNotSetException.class)
+    public ResponseEntity<?> NewUserNameIsNotSetException(WebRequest request) {
+        ErrorDetails errorDetails = new ErrorDetails(new Date(), "New User NAME is mandatory!", request.getDescription(false));
+        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(SaveException.class)
+    public ResponseEntity<?> SaveException(WebRequest request) {
+        ErrorDetails errorDetails = new ErrorDetails(new Date(), "SAVE operation failed!", request.getDescription(false));
+        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+    }
+    @ExceptionHandler(GetAllException.class)
+    public ResponseEntity<?> GetAllException(WebRequest request) {
+        ErrorDetails errorDetails = new ErrorDetails(new Date(), "GetAllException operation failed!", request.getDescription(false));
+        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+    }
+    @ExceptionHandler(EntityWasDeletedException.class)
+    public ResponseEntity<?> EntityWasDeletedException(WebRequest request) {
+        ErrorDetails errorDetails = new ErrorDetails(new Date(), "Employee was deleted with this ID!", request.getDescription(false));
+        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+    }
+
 
 }

@@ -2,10 +2,10 @@ package com.example.demowithtests.service;
 
 import com.example.demowithtests.domain.Employee;
 import com.example.demowithtests.repository.Repository;
-import com.example.demowithtests.util.ResourceNotFoundException;
-import com.example.demowithtests.util.ResourceWasDeletedException;
+import com.example.demowithtests.util.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataAccessException;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
@@ -20,12 +20,30 @@ public class ServiceBean implements Service {
 
     @Override
     public Employee create(Employee employee) {
-        return repository.save(employee);
+
+        if (employee.getName() == null) {
+            log.info("!-- NewUserNameIsNotSetException requested");
+            throw new NewUserNameIsNotSetException();
+        }
+        try {
+            repository.save(employee);
+        } catch (DataAccessException e) {
+            log.info("!-- SAVE operation failed!");
+            throw new SaveException();
+        }
+        return employee;
     }
 
     @Override
     public List<Employee> getAll() {
-        return repository.findAll();
+        List<Employee> employeeList;// = new ArrayList<>();
+        try {
+            employeeList = repository.findAll();
+        } catch (Exception e) {
+            log.info("!-- getAll operation failed!");
+            throw new GetAllException();
+        }
+        return employeeList;
     }
 
     @Override
@@ -33,9 +51,10 @@ public class ServiceBean implements Service {
         Employee employee = repository.findById(id)
                 // .orElseThrow(() -> new EntityNotFoundException("Employee not found with id = " + id));
                 .orElseThrow(ResourceNotFoundException::new);
-         /*if (employee.getIsDeleted()) {
-            throw new EntityNotFoundException("Employee was deleted with id = " + id);
-        }*/
+         if (employee.getIsDeleted()) {
+             log.info("!-- getById: Employee was deleted with id = " + id);
+             throw new EntityWasDeletedException();
+        }
         return employee;
     }
 
@@ -56,9 +75,9 @@ public class ServiceBean implements Service {
         //repository.deleteById(id);
         Employee employee = repository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Employee not found with id = " + id));
-                //.orElseThrow(ResourceWasDeletedException::new);
+        //.orElseThrow(ResourceWasDeletedException::new);
         employee.setIsDeleted(true);
-       // repository.delete(employee);
+        // repository.delete(employee);
         repository.save(employee);
     }
 
